@@ -1,28 +1,32 @@
 package dao;
 
-import entity.Cat;
 import entity.Client;
 import org.hibernate.Session;
-import utils.HibernateUtil;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@Component
 public class ClientDAO {
-    public List<Client> findAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return session.createQuery("FROM Client", Client.class)
-                .getResultList();
+    private final SessionFactory sessionFactory;
 
+    public ClientDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public List<Client> findAll() {
+       return sessionFactory.openSession().createQuery("FROM Client", Client.class)
+                .getResultList();
     }
 
     public Client findByID(int id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return session.get(Client.class, id);
-    }
+        return sessionFactory.openSession().get(Client.class, id);
 
+    }
     public void insert(String name) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         Client client = new Client();
         client.setName(name);
@@ -31,7 +35,7 @@ public class ClientDAO {
     }
 
     public void removeByID(int id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.getTransaction().begin();
         Client client = session.get(Client.class, id);
         if (client != null) {
@@ -42,7 +46,7 @@ public class ClientDAO {
     }
 
     public void updateNameByID(int id, String name) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.getTransaction().begin();
         Client client = session.get(Client.class, id);
         if (client != null) {
