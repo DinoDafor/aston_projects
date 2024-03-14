@@ -15,5 +15,6 @@ create table IF NOT EXISTS clients_cats
     client_id integer ,
     foreign key (client_id) references Client(ID) ON DELETE CASCADE,
     cat_id    integer,
-    foreign key (cat_id) references Cat (ID) ON DELETE CASCADE
+    foreign key (cat_id) references Cat (ID) ON DELETE CASCADE,
+    primary key (client_id, cat_id)
 );
