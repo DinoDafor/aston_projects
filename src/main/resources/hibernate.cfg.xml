@@ -12,6 +12,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="entity.Cat"/>
         <mapping class="entity.Client"/>
+        <mapping class="entity.Human"/>
+        <mapping class="entity.Worker"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
     </session-factory>
