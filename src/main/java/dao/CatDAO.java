@@ -1,16 +1,9 @@
 package dao;
 
 import entity.Cat;
-import entity.Client;
 import org.hibernate.Session;
-import utils.ConnectionManager;
 import utils.HibernateUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CatDAO {
@@ -25,7 +18,11 @@ public class CatDAO {
     }
     public void insert(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.persist(name);
+        session.beginTransaction();
+        Cat cat = new Cat();
+        cat.setName(name);
+        session.persist(cat);
+        session.getTransaction().commit();
     }
     public void removeByID(int id) {
         Session session = HibernateUtil.getSessionFactory().openSession();

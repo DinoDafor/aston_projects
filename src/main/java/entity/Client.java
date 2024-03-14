@@ -30,20 +30,17 @@ public class Client {
             inverseJoinColumns = @JoinColumn(name = "cat_id"))
     private List<Cat> cats;
 
-    public Client(String name) {
-        this.name = name;
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return Objects.equals(id, client.id) && Objects.equals(name, client.name) && Objects.equals(cats, client.cats);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, cats);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Client client = (Client) o;
+//        return Objects.equals(id, client.id) && Objects.equals(name, client.name) && Objects.equals(cats, client.cats);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, name, cats);
+//    }
 }

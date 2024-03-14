@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Cat;
 import entity.Client;
 import org.hibernate.Session;
 import utils.HibernateUtil;
@@ -22,8 +23,11 @@ public class ClientDAO {
 
     public void insert(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Client client = new Client(name);
+        session.beginTransaction();
+        Client client = new Client();
+        client.setName(name);
         session.persist(client);
+        session.getTransaction().commit();
     }
 
     public void removeByID(int id) {

@@ -9,10 +9,9 @@
         <property name="connection.username">postgres</property>
         <property name="connection.password">88dofodo</property>
         <property name="hibernate.show_sql">true</property>
-<!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="entity.Cat"/>
         <mapping class="entity.Client"/>
-        <mapping class="entity.ClientsCats"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
     </session-factory>
