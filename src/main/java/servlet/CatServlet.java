@@ -1,9 +1,8 @@
 package servlet;
 
 import dao.CatDAO;
-import model.Cat;
+import entity.Cat;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,7 @@ import java.util.List;
 public class CatServlet  extends HttpServlet {
     CatDAO catDAO = new CatDAO();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter printWriter = resp.getWriter();
         List<Cat> cats = catDAO.findAll();
         for (Cat cat :
@@ -27,7 +26,7 @@ public class CatServlet  extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String name = req.getParameter("name");
         if (name != null) {
             catDAO.insert(name);
@@ -35,7 +34,7 @@ public class CatServlet  extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         String catId = req.getParameter("catId");
         if (catId != null) {
             catDAO.removeByID(Integer.parseInt(catId));
@@ -43,7 +42,7 @@ public class CatServlet  extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
         String name = req.getParameter("name");
         String catId = req.getParameter("catId");
         if (catId != null && name != null) {

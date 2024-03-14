@@ -17,7 +17,5 @@ insert into clients_cats(client_id, cat_id)
 VALUES (1, 1),
        (1, 2),
        (2, 3),
-       (3, null),
        (4, 4),
-       (5, 4),
-       (null, 5);
+       (5, 4);

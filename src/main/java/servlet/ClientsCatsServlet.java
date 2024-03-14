@@ -1,7 +1,7 @@
 package servlet;
 
-import model.ClientsCats;
 import dao.ClientsCatsDAO;
+import entity.ClientsCats;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,7 +48,7 @@ public class ClientsCatsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String clientId = req.getParameter("clientId");
         String catId = req.getParameter("catId");
         if (clientId != null && catId != null) {
@@ -57,7 +57,7 @@ public class ClientsCatsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         String clientId = req.getParameter("clientId");
         String catId = req.getParameter("catId");
         if (clientId != null) {
@@ -68,7 +68,7 @@ public class ClientsCatsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
         String clientIdNew = req.getParameter("clientIdNew");
         String clientIdOld = req.getParameter("clientIdOld");
         String catId = req.getParameter("catId");

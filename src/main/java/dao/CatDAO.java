@@ -1,7 +1,10 @@
 package dao;
 
-import model.Cat;
+import entity.Cat;
+import entity.Client;
+import org.hibernate.Session;
 import utils.ConnectionManager;
+import utils.HibernateUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,91 +14,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CatDAO {
-    private static final String findAllCatsQuery = "SELECT * FROM Cat";
-
     public List<Cat> findAll() {
-        List<Cat> cats = new ArrayList<>();
-        Connection conn = ConnectionManager.getConnection();
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(findAllCatsQuery);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Cat cat = new Cat(
-                        rs.getInt("id"), rs.getString("name")
-                );
-                cats.add(cat);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return cats;
-
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        return session.createQuery("FROM Cat", Cat.class).getResultList();
     }
 
-    public void findByID(int id) {
-        Connection conn = ConnectionManager.getConnection();
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM cat WHERE id = ?");
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                System.out.println(rs.getString("name"));
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+    public Cat findByID(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        return session.get(Cat.class, id);
     }
-
     public void insert(String name) {
-        Connection conn = ConnectionManager.getConnection();
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO cat(name) VALUES (?)");
-            preparedStatement.setString(1, name);
-            int result = preparedStatement.executeUpdate();
-            if (result > 0) {
-                System.out.println("successful insertion: " + name);
-            } else {
-                System.out.println("unsuccessful insertion" + name);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.persist(name);
     }
-
     public void removeByID(int id) {
-        Connection conn = ConnectionManager.getConnection();
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM cat WHERE id = ?");
-            preparedStatement.setInt(1, id);
-            int result = preparedStatement.executeUpdate();
-            if (result > 0) {
-                System.out.println("successful removing: " + id);
-            } else {
-                System.out.println("unsuccessful removing: " + id);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Cat Cat = session.get(Cat.class, id);
+        if (Cat != null) {
+            session.remove(Cat);
+            session.getTransaction().commit();
+            System.out.println("Cat " + Cat.getId() + " was removed ");
         }
     }
 
     public void updateNameByID(int id, String name) {
-        Connection con = ConnectionManager.getConnection();
-        try {
-            PreparedStatement preparedStatement = con.prepareStatement("UPDATE cat SET name = ? WHERE id = ? ");
-            preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, id);
-            int result = preparedStatement.executeUpdate();
-            if (result > 0) {
-                System.out.println("successful update: " + id);
-            } else {
-                System.out.println("unsuccessful update: " + id);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Cat cat = session.get(Cat.class, id);
+        if (cat != null) {
+            cat.setName(name);
+            session.merge(cat);
+            session.getTransaction().commit();
         }
     }
 }
